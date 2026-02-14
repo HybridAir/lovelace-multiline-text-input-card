@@ -5,7 +5,6 @@
 
 	const SUPPORTED_ENTITY_DOMAINS = [
 		'text',
-		'input_text',
 		'var', 		// custom component: https://github.com/snarky-snark/home-assistant-variables/
 	];
 	const HA_ATTRIBUTE_MAX_LENGTH = 65535;
@@ -325,7 +324,7 @@
 		}
 
 		callService(service) {
-			if (this.config.entity_domain === 'input_text' || this.config.entity_domain === 'var') {
+			if (this.config.entity_domain === 'text' || this.config.entity_domain === 'var') {
 				const value = String((typeof this.config.service_values[service] === 'function' ? this.config.service_values[service]() : this.config.service_values[service]));
 				if (this.config.service[service]) {
 					const saveToStatePromise = () => {
@@ -409,7 +408,7 @@
 
 			// paste has no service, clear will be persisted by saving
 			const services = {
-				'input_text': {
+				'text': {
 					save: 'set_value',
 				},
 				'var': {
@@ -446,9 +445,9 @@
 				throw new Error('Please define an entity of type: ' + SUPPORTED_ENTITY_DOMAINS.join(', '));
 			}
 
-			const storeAsConfig = config.store_as || [ entityDomain === 'input_text' ? 'state' : 'attribute' ];
+			const storeAsConfig = config.store_as || [ entityDomain === 'text' ? 'state' : 'attribute' ];
 
-			if(entityDomain === 'input_text' && storeAsConfig.includes('attribute')) {
+			if(entityDomain === 'text' && storeAsConfig.includes('attribute')) {
 				throw new Error(`Domain ${entityDomain} cannot store as attribute. Please use an entity of the var component to achieve this.`);
 			}
 			const storeAsState = storeAsConfig.includes('state');
@@ -523,9 +522,9 @@
 					if (this.config.title === undefined) {
 						this.config.title = this.stateObj.attributes.friendly_name || '';
 					}
-					if (this.config.entity_domain === 'input_text') {
+					if (this.config.entity_domain === 'text') {
 						if (this.stateObj.attributes.mode !== 'text') {
-							throw new Error(`The input_text entity must be in 'text' mode (is: ${this.stateObj.attributes.mode})!`);
+							throw new Error(`The text entity must be in 'text' mode (is: ${this.stateObj.attributes.mode})!`);
 						}
 					}
 				}
