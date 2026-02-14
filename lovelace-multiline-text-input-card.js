@@ -4,6 +4,7 @@
 	const version = '1.0.7';
 
 	const SUPPORTED_ENTITY_DOMAINS = [
+		'text',
 		'input_text',
 		'var', 		// custom component: https://github.com/snarky-snark/home-assistant-variables/
 	];
